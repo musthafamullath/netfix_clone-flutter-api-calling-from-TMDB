@@ -1,20 +1,17 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/presentation/widgets/details_screan.dart';
-import 'package:netflix_clone/presentation/widgets/main_title.dart';
+import '../../../apiconstants/apiconstants.dart';
+import '../../widgets/main_title.dart';
 
-import '../../apiconstants/apiconstants.dart';
-
-class MainTitleCard extends StatelessWidget {
-  const MainTitleCard({
+class CarouselSliderWIdget extends StatelessWidget {
+  const CarouselSliderWIdget({
     super.key,
     required this.pictureSizewidth,
-    required this.title,
     required this.snapshot,
   });
 
   final double pictureSizewidth;
-  final String title;
   final AsyncSnapshot snapshot;
 
   @override
@@ -27,27 +24,34 @@ class MainTitleCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MainTitle(title: title),
-              LimitedBox(
-                maxHeight: 200,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  separatorBuilder: (context, index) => kWidth5,
+              const MainTitle(title: "Trending Movies"),
+              SizedBox(
+                width: pictureSizewidth,
+                child: CarouselSlider.builder(
                   itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        Navigator.push(
+                  options: CarouselOptions(
+                    height: pictureSizewidth * 0.55,
+                    autoPlay: true,
+                    viewportFraction: 0.35,
+                    enableInfiniteScroll: true,
+                    pageSnapping: true,
+                    enlargeCenterPage: true,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayAnimationDuration: const Duration(seconds: 2),
+                  ),
+                  itemBuilder: (context, index, realIndex) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
                                   DetailsScreen(movie: snapshot.data[index]),
                             ),
                           );
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        },
                         child: SizedBox(
                           width: pictureSizewidth * 0.33,
                           height: pictureSizewidth * 0.6,
@@ -60,7 +64,7 @@ class MainTitleCard extends StatelessWidget {
                     );
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),

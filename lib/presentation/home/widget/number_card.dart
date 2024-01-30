@@ -1,6 +1,3 @@
-
-
-
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
@@ -17,34 +14,46 @@ class NumberCard extends StatelessWidget {
   final int index;
 
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Row(
           children: [
             SizedBox(
-              width: pictureSizewidth*1/8,
+              width: pictureSizewidth * 1 / 10,
+              height: pictureSizewidth * 0.6,
             ),
             Container(
-              width: pictureSizewidth*0.33,
-              height: pictureSizewidth*0.6,
-              decoration:  BoxDecoration(
+              width: pictureSizewidth * 0.33,
+              height: pictureSizewidth * 0.6,
+              decoration: BoxDecoration(
                 borderRadius: kradius10,
-                image:const DecorationImage(
+                image: const DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                      "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg"),
+                  kImaged1),
                 ),
               ),
             ),
           ],
         ),
         Positioned(
-          left: 10,
-          bottom: 0,
-          child:  BorderedText(
-            strokeWidth:10.0,
-            child: Text("${index + 1}",style: const TextStyle(fontSize: 100,decoration: TextDecoration.none,decorationColor: black ),),),),
+          left: 2,
+          bottom: -30,
+          child: BorderedText(
+            strokeWidth: 4,
+            strokeColor: white,
+            child: Text(
+              "${index + 1}",
+              style: const TextStyle(
+                  fontSize: 110,
+                  color: black,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                  decorationColor: black),
+            ),
+          ),
+        ),
       ],
     );
   }

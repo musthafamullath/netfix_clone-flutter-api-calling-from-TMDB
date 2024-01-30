@@ -1,7 +1,6 @@
 
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constents.dart';
@@ -34,9 +33,9 @@ class ScreenDownlaod extends StatelessWidget {
 class Section2 extends StatelessWidget {
   Section2({super.key});
   final List imageList = [
-    "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg",
-    "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg",
-    "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg",
+    kImaged1,
+    kImaged2,
+    kImaged3,
   ];
   @override
   Widget build(BuildContext context) {

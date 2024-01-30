@@ -1,17 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
+import 'package:netflix_clone/core/string.dart';
+import 'package:netflix_clone/presentation/fast_laughs/widgets/video_action_widget.dart';
+import 'package:netflix_clone/presentation/fast_laughs/widgets/video_player_button.dart';
+import 'package:video_player/video_player.dart';
 
-class VideoListItem extends StatelessWidget {
+class VideoListItem extends StatefulWidget {
   final int index;
   const VideoListItem({super.key, required this.index});
+
+  @override
+  State<VideoListItem> createState() => _VideoListItemState();
+}
+
+class _VideoListItemState extends State<VideoListItem> {
+  VideoPlayerController? playerController;
+  bool isVolumeOn = true;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      playerController =
+          VideoPlayerController.networkUrl(Uri.parse(videoList[widget.index]));
+    });
+    playerController!.initialize();
+    playerController!.play();
+    playerController!.setVolume(4);
+    playerController!.setLooping(true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    playerController!.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          color: Colors.accents[index % Colors.accents.length],
+        SizedBox.expand(
+          child: SizedBox(
+            width: playerController!.value.size.width,
+            height: playerController!.value.size.height,
+            child: VideoPlayer(playerController!),
+          ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -21,48 +55,43 @@ class VideoListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundColor: black.withOpacity(0.5),
-                  radius: 30,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.volume_off,
-                      color: white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-                 Column(
+                vedioCircleAvatarWidget(),
+                Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const  EdgeInsets.symmetric(vertical: 10),
-                      child:  Container(
-                        decoration:const BoxDecoration(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Container(
+                        decoration: const BoxDecoration(
                           color: white,
                           shape: BoxShape.circle,
-                          boxShadow:  [
+                          boxShadow: [
                             BoxShadow(
                                 blurRadius: 5,
                                 color: black,
-                                spreadRadius: 1,offset: Offset(2.5, 2.5))
+                                spreadRadius: 1,
+                                offset: Offset(2.5, 2.5))
                           ],
                         ),
-                        child:const CircleAvatar(
-                         radius: 30,
-                         backgroundImage: NetworkImage(
-                             "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/zVMyvNowgbsBAL6O6esWfRpAcOb.jpg"),
-                            ),
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: black,
+                          backgroundImage:
+                              NetworkImage(imageList[widget.index]),
+                        ),
                       ),
                     ),
-                    const VideoActionWidget(icon: Icons.emoji_emotions, title: "LOL"),
+                    const VideoActionWidget(
+                      icon: Icons.emoji_emotions,
+                      title: "LOL",
+                    ),
                     const VideoActionWidget(
                         icon: CupertinoIcons.add, title: "My List"),
                     const VideoActionWidget(
                         icon: CupertinoIcons.paperplane, title: "Share"),
-                    const VideoActionWidget(
-                        icon: CupertinoIcons.play_fill, title: "play"),
+                    VideoPlayButton(
+                      playerController: playerController!,
+                    ),
                   ],
                 )
               ],
@@ -72,40 +101,34 @@ class VideoListItem extends StatelessWidget {
       ],
     );
   }
-}
 
-class VideoActionWidget extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  const VideoActionWidget({super.key, required this.icon, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: white,
-            size: 30,
-            shadows: const [
-              Shadow(
-                color: black,
-                blurRadius: 10,
-                offset: Offset(2.5, 2.5),
+  CircleAvatar vedioCircleAvatarWidget() {
+    return CircleAvatar(
+      backgroundColor: black.withOpacity(0.5),
+      radius: 30,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            isVolumeOn == false
+                ? playerController!.setVolume(4)
+                : playerController!.setVolume(0);
+            isVolumeOn = !isVolumeOn;
+          });
+        },
+        child: isVolumeOn
+            ? const Icon(
+                CupertinoIcons.volume_up,
+                color: white,
+                size: 30,
               )
-            ],
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              color: white,
-              fontSize: 16,
-            ),
-          ),
-        ],
+            : const Icon(
+                CupertinoIcons.volume_off,
+                color: white,
+                size: 30,
+              ),
       ),
     );
   }
 }
+
+
