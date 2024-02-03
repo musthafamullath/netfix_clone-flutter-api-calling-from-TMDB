@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/core/colors/colors.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:netflix_clone/api/api.dart';
+import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/presentation/new_and_hot/new_and_hot_app_bar.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/comming_soon_widget.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/everyone_watching_widget.dart';
-import '../../api/api.dart';
-import '../../core/constents.dart';
-import '../../models/movie.dart';
+
+import '../../core/string.dart';
 
 class ScreenNewAndHot extends StatefulWidget {
   const ScreenNewAndHot({super.key});
@@ -14,126 +16,115 @@ class ScreenNewAndHot extends StatefulWidget {
 }
 
 class _ScreenNewAndHotState extends State<ScreenNewAndHot> {
+  late Future<List<Movie>> upComingMovies;
+  late Future<List<Movie>> popularSeries;
 
-  late Future<List<Movie>> trendingmovies;
   @override
   void initState() {
+    upComingMovies = Api().getUpComingMovies();
+    popularSeries = Api().getNowPlayingMovies();
     super.initState();
-    trendingmovies = Api().getTrendingMovies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(95),
-          child: AppBar(
-            title: const Text(
-              "New & Hot",
-              style: TextStyle(
-                  fontSize: 30, color: white, fontWeight: FontWeight.bold),
-            ),
-            actions: [
-              const Icon(
-                Icons.cast,
-                size: 30,
-                color: white,
-              ),
-              kWidth,
-              Container(
-                width: 30,
-                height: 25,
-                color: blue,
-              ),
-              kWidth,
+    final size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(size.height * 0.115),
+            child: const NewAndHotAppBar(),
+          ),
+          body: TabBarView(
+            children: [
+              _tabViewOne(context, upComingMovies, size),
+              _tavViewTwo(popularSeries),
             ],
-            bottom: TabBar(
-              unselectedLabelColor: white,
-              dividerColor: transparent,
-              labelPadding: const EdgeInsets.symmetric(vertical: 6),
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorPadding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-              labelColor: black,
-              labelStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              indicator: BoxDecoration(
-                color: white,
-                borderRadius: kradius30,
-              ),
-              tabs: const [
-                Tab(
-                  text: "🍿 Comming Soon",
-                ),
-                Tab(
-                  text: " 👀 Everyone Watching",
-                ),
-              ],
-            ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildComingSoon(),
-            _buildEveryoneWatching(),
-          ],
-        ),
       ),
     );
   }
 
-  Widget _buildComingSoon() {
-    return SizedBox(
-      child: FutureBuilder(
-        future: trendingmovies,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child: RefreshProgressIndicator()
-            );
-          } else if (snapshot.hasData) {
-            return ListView.builder(
-              itemBuilder: (context, index) => CommingSoonWIdget(
-                snapshot: snapshot,
-                index: index,
-              ),
-              itemCount: snapshot.data!.length,
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+  Widget _tabViewOne(
+    BuildContext context,
+    Future<List<Movie>> upComingMovies,
+    Size size,
+  ) {
+    return FutureBuilder(
+      future: upComingMovies,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Error loading');
+        } else if (snapshot.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return ComingSoonCard(
+                image: imageBaseUrl + snapshot.data![index].backdropPath,
+                title: snapshot.data![index].title,
+                overview: snapshot.data![index].overview,
+                date: snapshot.data![index].releaseDate,
+              );
+            },
+          );
+        } else {
+          return SpinKitFadingCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.red : Colors.green,
+                ),
+              );
+            },
+          );
+        }
+      },
     );
   }
 
-  Widget _buildEveryoneWatching() {
-       return SizedBox(
-      child: FutureBuilder(
-        future: trendingmovies,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(
-              child:  RefreshProgressIndicator()
-            );
-          } else if (snapshot.hasData) {
-            return ListView.builder(
-              itemBuilder: (context, index) => EveryoneWatchingWidget(snapshot: snapshot, index: index),
-              itemCount: snapshot.data!.length,
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+  Widget _tavViewTwo(Future<List<Movie>> popularMovies) {
+    return FutureBuilder(
+      future: popularMovies,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return SpinKitFadingCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.red : Colors.green,
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: 10,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return EveryWatchCard(
+                image: imageBaseUrl + snapshot.data![index].backdropPath,
+                title: snapshot.data![index].title,
+                overview: snapshot.data![index].overview,
+              );
+            },
+          );
+        } else {
+          return SpinKitFadingCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: index.isEven ? Colors.red : Colors.green,
+                ),
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
+

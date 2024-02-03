@@ -9,6 +9,8 @@ const kHeight5 = SizedBox(height: 5);
 const kHeight12 = SizedBox(height: 12);
 const kHeight25 = SizedBox(height: 25);
 const kHeight50 = SizedBox(height: 50);
+kkWidth(double width) => SizedBox(width: width);
+kkHeight(double height) => SizedBox(height: height);
 
 
 //borderRedius
@@ -24,6 +26,29 @@ const kImagelandscape = "https://media.themoviedb.org/t/p/w355_and_h200_multi_fa
 //textstyles
 TextStyle kHomeTitleText = const TextStyle(fontSize: 16,fontWeight: FontWeight.bold);
 //netflixImage 
-const kImageNetflix = "asset/netflix-symbol-black-removebg.png";
-const kImageNetflixcroped = "asset/netflix-symbol-black__1_-removebg-preview.png";
-const kImageNetflixcropedLongedName = "asset/pngimg.com - netflix_PNG25.png";
+const kImageNetflix = "assets/netflix-symbol-black-removebg.png";
+const kImageNetflixcroped = "assets/netflix-symbol-black__1_-removebg-preview.png";
+const kImageNetflixcropedLongedName = "assets/pngimg.com - netflix_PNG25.png";
+//shimmerGradient
+final shimmerGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: <Color>[
+    Colors.grey[900]!,
+    Colors.grey[200]!,
+    Colors.grey[500]!,
+    Colors.grey[200]!,
+    Colors.grey[900]!
+  ],
+  stops: const <double>[0.0, 0.35, 0.5, 0.65, 1.0],
+);
+
+//mainImage
+const mainImage =
+    "https://firebasestorage.googleapis.com/v0/b/api-netflix-4acce.appspot.com/o/Error%20image.jpg?alt=media&token=902c101f-c10e-4f4e-8318-aad84c640ff3";
+
+
+const kTextStyleHome = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+);

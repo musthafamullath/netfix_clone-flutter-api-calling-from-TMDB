@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/presentation/widgets/details_screan.dart';
-import '../../../apiconstants/apiconstants.dart';
-import '../../widgets/main_title.dart';
+import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:netflix_clone/presentation/home/widget/details_screan.dart';
+import 'package:netflix_clone/presentation/home/widget/main_title.dart';
+
 
 class CarouselSliderWIdget extends StatelessWidget {
   const CarouselSliderWIdget({

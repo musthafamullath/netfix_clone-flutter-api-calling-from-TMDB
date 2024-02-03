@@ -1,10 +1,10 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/apiconstants/apiconstants.dart';
 import 'package:netflix_clone/core/constents.dart';
-import 'package:netflix_clone/presentation/widgets/main_title.dart';
-import '../../../apiconstants/apiconstants.dart';
+import 'package:netflix_clone/presentation/home/widget/main_title.dart';
 import '../../../core/colors/colors.dart';
-import '../../widgets/details_screan.dart';
+import 'details_screan.dart';
 
 class NumberTitleCard extends StatelessWidget {
   const NumberTitleCard({

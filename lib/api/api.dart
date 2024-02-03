@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:netflix_clone/apiconstants/apiconstants.dart';
+
 import 'package:netflix_clone/models/movie.dart';
 import 'package:http/http.dart' as http;
 

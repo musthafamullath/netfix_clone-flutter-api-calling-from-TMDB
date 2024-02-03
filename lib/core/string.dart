@@ -1,5 +1,37 @@
-const kBaseUrl = "https://api.themoviedb.org/3";
+
 const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
+
+
+// ======== Custom icons ========
+
+String home = 'assets/icons/hut.png';
+String newAndHot = 'assets/icons/play.png';
+String fastLaughs = 'assets/icons/smile.png';
+String search = 'assets/icons/search.png';
+String downloads = 'assets/icons/down-arrow.png';
+String screenCast = 'assets/icons/cast.png';
+String setting = 'assets/icons/configuration.png';
+String searchPlay = 'assets/icons/search-play.png';
+
+String fastLaughPlay = 'assets/icons/fast-laugh-play.png';
+String fastLaughPause = 'assets/icons/pause.png';
+String fastLaughEmoji = 'assets/icons/laugh.png';
+String fastLaughShare = 'assets/icons/share.png';
+String fastLaughAdd = 'assets/icons/add.png';
+String fastLaughVolumeMute = 'assets/icons/volume-mute.png';
+String fastLaughVolume = 'assets/icons/volume.png';
+String info = 'assets/icons/info.png';
+String notification = 'assets/icons/notification.png';
+
+// ======== Profile icons ========
+
+String profile = 'assets/icons/profile.png';
+String logo = 'assets/logos/netflix-logo.png';
+String seriesLogo = 'assets/logos/netflix-series.png';
+String filmLogo = 'assets/logos/netflix-film.png';
+
+// ======== Image list ========
+
 
 List imageList = [
   'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSlSl-4uIoqKTnBCjBg9JrlfugzGV5liiutT8vX3gWckjbRK_Lk',

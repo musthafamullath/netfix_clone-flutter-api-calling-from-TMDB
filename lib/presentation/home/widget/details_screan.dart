@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/models/movie.dart';
-import 'package:netflix_clone/presentation/widgets/back_btn.dart';
 import 'package:netflix_clone/presentation/widgets/rating_widget.dart';
 import 'package:netflix_clone/presentation/widgets/release_date_widget.dart';
 
@@ -20,7 +20,22 @@ class DetailsScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
-            leading: const BackBTN(),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 5,top: 5,bottom: 5),
+              child: Container(
+                height: 50,
+                width: 50,
+                
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  
+                  color: black.withOpacity(0.5),
+                ),
+                child: IconButton(onPressed: (){
+                  Navigator.pop(context);
+                }, icon:const Icon(Icons.arrow_back,color: white,size: 32,)),
+              ),
+            ),
             expandedHeight: size * 5.5 / 10,
             pinned: true,
             floating: true,

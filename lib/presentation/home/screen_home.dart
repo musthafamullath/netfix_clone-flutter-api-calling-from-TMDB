@@ -1,14 +1,21 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:netflix_clone/api/api.dart';
-import 'package:netflix_clone/core/colors/colors.dart';
+
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/models/movie.dart';
 import 'package:netflix_clone/presentation/home/widget/background_card.dart';
 import 'package:netflix_clone/presentation/home/widget/carousel_slider_widget.dart';
 import 'package:netflix_clone/presentation/home/widget/number_title_card.dart';
-import 'package:netflix_clone/presentation/widgets/main_title_card.dart';
-import 'package:netflix_clone/presentation/widgets/netflix_logo_Widget.dart';
+
+import 'package:netflix_clone/presentation/home/widget/main_title_card.dart';
+
+import 'package:netflix_clone/presentation/widgets/home_screen_appbar.dart';
+
+import '../widgets/shimmer_widgets.dart';
+
 
 ValueNotifier<bool> scrollNotfier = ValueNotifier(true);
 
@@ -38,7 +45,7 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   @override
   Widget build(BuildContext context) {
-    final pictureSizewidth = MediaQuery.of(context).size.width;
+    final pictureSizewidth = MediaQuery.of(context).size;
     return Scaffold(
       body: ValueListenableBuilder(
         valueListenable: scrollNotfier,
@@ -53,45 +60,44 @@ class _ScreenHomeState extends State<ScreenHome> {
               }
               return true;
             },
-            child: Stack(
+            child:
+             Stack(
               children: [
                 ListView(
                   children: [
-                    BackgroudCard(pictureSizewidth),
+                    BackgroudCard(pictureSizewidth.width, ),
                     kpaddingsymetric2,
                     SizedBox(
                       child: FutureBuilder(
                         future: trendingmovies,
                         builder: (context, snapshot) {
-                          if(snapshot.hasError){
-                            return const Center(
-                              child: RefreshProgressIndicator(),
+                          if (snapshot.hasError) {
+                            return ErrorLoading(size: pictureSizewidth);
+                          } else if (snapshot.hasData) {
+                            return CarouselSliderWIdget(
+                              pictureSizewidth: pictureSizewidth.width,
+                              snapshot: snapshot,
                             );
-                          }else if(snapshot.hasData){
-                            return CarouselSliderWIdget(pictureSizewidth: pictureSizewidth, snapshot: snapshot,);
-                          }else{
-                            return const Center(
-                              child:  CircularProgressIndicator(),
-                            );
+                          } else {
+                            return ListViewLoading(size: pictureSizewidth);
                           }
                         },
                       ),
                     ),
                     kpaddingsymetric2,
-                     SizedBox(
+                    SizedBox(
                       child: FutureBuilder(
                         future: topRatedmovies,
                         builder: (context, snapshot) {
-                          if(snapshot.hasError){
-                            return const Center(
-                              child: RefreshProgressIndicator(),
-                            );
-                          }else if(snapshot.hasData){
-                            return MainTitleCard(pictureSizewidth: pictureSizewidth, title: "Top Rated movies", snapshot: snapshot);
-                          }else{
-                            return const Center(
-                              child:  CircularProgressIndicator(),
-                            );
+                          if (snapshot.hasError) {
+                            return ErrorLoading(size: pictureSizewidth);
+                          } else if (snapshot.hasData) {
+                            return MainTitleCard(
+                                pictureSizewidth: pictureSizewidth.width,
+                                title: "Top Rated movies",
+                                snapshot: snapshot);
+                          } else {
+                            return ListViewLoading(size: pictureSizewidth);
                           }
                         },
                       ),
@@ -101,54 +107,50 @@ class _ScreenHomeState extends State<ScreenHome> {
                       child: FutureBuilder(
                         future: nowPlayingmovies,
                         builder: (context, snapshot) {
-                          if(snapshot.hasError){
-                            return const Center(
-                              child:  RefreshProgressIndicator(),
-                            );
-                          }else if(snapshot.hasData){
-                            return NumberTitleCard(pictureSizewidth: pictureSizewidth, snapshot: snapshot);
-                          }else{
-                            return const Center(
-                              child:  CircularProgressIndicator(),
-                            );
+                          if (snapshot.hasError) {
+                            return  ErrorLoading(size: pictureSizewidth);
+                          } else if (snapshot.hasData) {
+                            return NumberTitleCard(
+                                pictureSizewidth: pictureSizewidth.width,
+                                snapshot: snapshot);
+                          } else {
+                            return ListViewLoading(size: pictureSizewidth);
                           }
                         },
                       ),
                     ),
                     kpaddingsymetric2,
-                      SizedBox(
+                    SizedBox(
                       child: FutureBuilder(
                         future: upComingmovies,
                         builder: (context, snapshot) {
-                          if(snapshot.hasError){
-                            return const Center(
-                              child: RefreshProgressIndicator(),
-                            );
-                          }else if(snapshot.hasData){
-                            return MainTitleCard(pictureSizewidth: pictureSizewidth, title: "Up Comming Movies", snapshot: snapshot);
-                          }else{
-                            return const Center(
-                              child:  CircularProgressIndicator(),
-                            );
+                          if (snapshot.hasError) {
+                            return ErrorLoading(size: pictureSizewidth);
+                          } else if (snapshot.hasData) {
+                            return MainTitleCard(
+                                pictureSizewidth: pictureSizewidth.width,
+                                title: "Up Comming Movies",
+                                snapshot: snapshot);
+                          } else {
+                            return ListViewLoading(size: pictureSizewidth);
                           }
                         },
                       ),
                     ),
                     kpaddingsymetric2,
-                     SizedBox(
+                    SizedBox(
                       child: FutureBuilder(
                         future: popularmovies,
                         builder: (context, snapshot) {
-                          if(snapshot.hasError){
-                            return const Center(
-                              child: RefreshProgressIndicator(),
-                            );
-                          }else if(snapshot.hasData){
-                            return MainTitleCard(pictureSizewidth: pictureSizewidth, title: "Popular Movies", snapshot: snapshot);
-                          }else{
-                            return const Center(
-                              child:  CircularProgressIndicator(),
-                            );
+                          if (snapshot.hasError) {
+                            return ErrorLoading(size: pictureSizewidth);
+                          } else if (snapshot.hasData) {
+                            return MainTitleCard(
+                                pictureSizewidth: pictureSizewidth.width,
+                                title: "Popular Movies",
+                                snapshot: snapshot);
+                          } else {
+                            return ListViewLoading(size: pictureSizewidth);
                           }
                         },
                       ),
@@ -157,47 +159,8 @@ class _ScreenHomeState extends State<ScreenHome> {
                   ],
                 ),
                 scrollNotfier.value == true
-                    ? AnimatedContainer(
-                        duration: const Duration(microseconds: 1000),
-                        width: double.infinity,
-                        height: pictureSizewidth * 0.27,
-                        color: black.withOpacity(0.15),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                kWidth,
-                                const NetflixLogoClass(
-                                  logoWidth: 80,
-                                  logoHeith: 80,
-                                ),
-                                const Spacer(),
-                                const Icon(
-                                  Icons.cast,
-                                  size: 30,
-                                  color: white,
-                                ),
-                                kWidth,
-                                Container(
-                                  width: 30,
-                                  height: 25,
-                                  color: blue,
-                                ),
-                                kWidth,
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("TV Shows", style: kHomeTitleText),
-                                Text("Movies", style: kHomeTitleText),
-                                Text("Categories", style: kHomeTitleText),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    : kHeight,
+                    ?HomeScreenAppbar(size: pictureSizewidth)
+                    : kkHeight(0),
               ],
             ),
           );

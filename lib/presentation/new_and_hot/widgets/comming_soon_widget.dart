@@ -1,110 +1,177 @@
-import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:netflix_clone/core/colors/colors.dart';
-import 'package:netflix_clone/core/constents.dart';
-import '../../home/widget/custom_button_widget.dart';
-import '../../widgets/netflix_logo_with_text.dart';
-import '../../widgets/video_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:netflix_clone/core/string.dart';
+import 'package:netflix_clone/presentation/new_and_hot/widgets/action_widget.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../../core/constents.dart';
+import 'package:intl/intl.dart';
 
-class CommingSoonWIdget extends StatelessWidget {
-  const CommingSoonWIdget({
-    super.key, 
-    required this.snapshot, 
-    required this.index,
+
+
+
+
+
+class ComingSoonCard extends StatelessWidget {
+  const ComingSoonCard({
+    super.key,
+    required this.image,
+    required this.overview,
+    required this.title,
+    required this.date,
   });
-  final AsyncSnapshot snapshot;
-  final int index;
+
+  final String image;
+  final String title;
+  final String overview;
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Row(
-      children: [
-        kHeight,
-        SizedBox(
-          width: size.width * 0.15,
-          height: size.height *7.5/10,
-          child:  Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+    return SizedBox(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _newAndHotSideDate(size, date),
+          SizedBox(
+            // height: size.height * 0.6,
+            width: size.width - 50,
+            child: Column(
+              children: [
+                _newAndHotMainImage(size, image),
+                _cardDetails(size, title, overview, date),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _cardDetails(
+      Size size, String title, String overview, DateTime date) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              const Text(
-                "Vote",
-                style: TextStyle(fontSize: 18, color: grey),
+              const Spacer(),
+              ActionWidget(
+                icon: notification,
+                iconSize: 0.06,
+                text: 'Remind Me',
+                height: 0.006,
+                textSize: 13,
+                textColor: Colors.grey.shade600,
               ),
-              Padding(
-                padding:const EdgeInsets.only(left: 5),
-                child: Text(
-                  "${snapshot.data[index].voteAverage}",
-                  style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
+              kkWidth(size.width * 0.08),
+              ActionWidget(
+                icon: info,
+                iconSize: 0.055,
+                text: 'Info',
+                height: 0.007,
+                textSize: 13,
+                textColor: Colors.grey.shade600,
               ),
             ],
           ),
-        ),
-        SizedBox(
-          width: size.width * 0.85,
-          height: size.height *7.5/10,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              VideoWidget(size: size, snapshot: snapshot, index: index,),
-              kHeight,
-               Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      "${snapshot.data![index].originalTitle}",
-                      style: GoogleFonts.shadowsIntoLight(fontSize: 20,letterSpacing: 1, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const Spacer(),
-                  const Row(
-                    children: [
-                      CustomButtonWidget(
-                        icon: CupertinoIcons.bell,
-                        title: "Remain me",
-                        iconSize: 20,
-                        textSize: 10,
-                      ),
-                      kWidth,
-                      kWidth,
-                      CustomButtonWidget(
-                        icon: CupertinoIcons.info,
-                        title: "Info",
-                        iconSize: 20,
-                        textSize: 10,
-                      ),
-                      kWidth,
-                      kWidth5,
-                    ],
-                  ),
-                ],
+          Text(
+            'Releasing on ${DateFormat('EEEE').format(date)} ',
+            style: const TextStyle(
+              fontWeight: FontWeight.w100,
+              fontSize: 16,
+            ),
+          ),
+          kkHeight(10),
+          Image.asset(filmLogo),
+          Text(
+            title,
+            style: const TextStyle(
+                fontWeight: FontWeight.w600, fontSize: 18, height: 1),
+          ),
+          kkHeight(10),
+          Text(
+            overview,
+            style: TextStyle(
+                fontWeight: FontWeight.w100,
+                fontSize: 14,
+                color: Colors.grey.shade600),
+          ),
+          kkHeight(size.height * 0.04)
+        ],
+      ),
+    );
+  }
+
+  Container _newAndHotMainImage(Size size, String image) {
+    return Container(
+      width: double.infinity,
+      height: size.height * 0.255,
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Stack(
+        children: [
+          CachedNetworkImage(
+            imageUrl: image,
+            imageBuilder: (context, imageProvider) => ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Image(
+                image: imageProvider,
+                fit: BoxFit.cover,
+                width: size.width,
+                height: size.height,
               ),
-              kHeight5,
-              Text("${snapshot.data![index].releaseDate}"),
-              kHeight,
-              const NetflixLogoWIthText(),
-              Text(
-                "${snapshot.data![index].title}",
-                style: const TextStyle(
-                  
-                  fontSize: 18,
+            ),
+            placeholder: (context, url) => Shimmer(
+              gradient: shimmerGradient,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: Colors.black,
                 ),
               ),
-              kHeight,
-               Text(
-                "${snapshot.data[index].overview}",
-                style: const TextStyle(color: grey),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Image.asset(
+              logo,
+              width: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizedBox _newAndHotSideDate(Size size, DateTime date) {
+    return SizedBox(
+      width: 50,
+      // height: size.height * 0.6,
+      child: Column(
+        children: [
+          Text(
+            DateFormat('MMM').format(date).toUpperCase(),
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w100,
+                color: Colors.grey.shade600),
+          ),
+          Text(
+            DateFormat('dd').format(date),
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w500,
+              height: 1,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
-
-
-

@@ -1,27 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/presentation/search/widget/title.dart';
-
-import '../../../api/api.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../../core/string.dart';
 import '../../../models/movie.dart';
+import '../../../models/series.dart';
 
-class SearchResultWidget extends StatefulWidget {
+class SearchResultWidget extends StatelessWidget {
   const SearchResultWidget({
     super.key,
+    required this.movieList,
+    required this.seriesList,
   });
 
-  @override
-  State<SearchResultWidget> createState() => _SearchResultWidgetState();
-}
-
-class _SearchResultWidgetState extends State<SearchResultWidget> {
-  late Future<List<Movie>> topRatedmovies;
-  @override
-  void initState() {
-    super.initState();
-    topRatedmovies = Api().getTopRatedMovies();
-  }
+  final Future<List<Movie>> movieList;
+  final Future<List<Series>> seriesList;
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +24,67 @@ class _SearchResultWidgetState extends State<SearchResultWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          kHeight,
-          const SearchTextTitle(title: "Movies & TV"),
-          kHeight,
+          const SearchTextTitle(title: 'Films & TV'),
           FutureBuilder(
-            future: topRatedmovies,
+            future: Future.wait([movieList, seriesList]),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return const Center(
-                  child: RefreshProgressIndicator(),
+                return 
+                SpinKitFadingCircle(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: index.isEven ? Colors.red : Colors.green,
+                      ),
+                    );
+                  },
                 );
               } else if (snapshot.hasData) {
-                return Expanded(
-                  child: GridView.count(
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                    childAspectRatio: 1 / 1.4,
-                    children: List.generate(
-                      20,
-                      (index) {
-                        return MainCard(poster: ApiConstants.imagePath+snapshot.data![index].posterPath,);
-                      },
-                    ),
-                  ),
-                );
+                int length = snapshot.data![0].length + snapshot.data![1].length;
+                List<dynamic> movies = snapshot.data![0];
+                List<dynamic> series = snapshot.data![1];
+                return movies.isNotEmpty && series.isNotEmpty
+                    ? Expanded(
+                        child: GridView.count(
+                          padding: const EdgeInsets.only(top: 0, bottom: 10),
+                          shrinkWrap: true,
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 1 / 1.4,
+                          children: List.generate(length, (index) {
+                            if (index < movies.length) {
+                              return SearchMainCard(
+                                image: imageBaseUrl + movies[index].posterPath,
+                              );
+                            } else {
+                              int seriesIndex = index - movies.length;
+                              return SearchMainCard(
+                                image:
+                                    imageBaseUrl + series[seriesIndex].posterPath,
+                              );
+                            }
+                          }),
+                        ),
+                      )
+                    : const Align(
+                        child: Text(
+                          'No results found!!!',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return SpinKitFadingCircle(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: index.isEven ? Colors.red : Colors.green,
+                      ),
+                    );
+                  },
                 );
               }
             },
@@ -68,19 +95,36 @@ class _SearchResultWidgetState extends State<SearchResultWidget> {
   }
 }
 
-class MainCard extends StatelessWidget {
-  const MainCard({
-    super.key, 
-    required this.poster,
-  });
-  final String poster;
+class SearchMainCard extends StatelessWidget {
+  const SearchMainCard({super.key, required this.image});
+
+  final String image;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(image: NetworkImage(poster), fit: BoxFit.cover),
-          borderRadius: BorderRadius.circular(7)),
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      child: CachedNetworkImage(
+        imageUrl: image,
+        imageBuilder: (context, imageProvider) => ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Image(
+            image: imageProvider,
+            fit: BoxFit.cover,
+            width: size.width,
+            height: size.height,
+          ),
+        ),
+        placeholder: (context, url) => Shimmer(
+          gradient: shimmerGradient,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

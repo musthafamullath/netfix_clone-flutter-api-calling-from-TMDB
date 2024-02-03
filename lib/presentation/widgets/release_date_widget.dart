@@ -29,7 +29,7 @@ class ReleaseDateWidget extends StatelessWidget {
             ),
           ),
           Text(
-            movie.releaseDate,
+            movie.releaseDate.toString(),
             style: GoogleFonts.zenAntique(
               fontSize: 15,
               fontWeight: FontWeight.bold,

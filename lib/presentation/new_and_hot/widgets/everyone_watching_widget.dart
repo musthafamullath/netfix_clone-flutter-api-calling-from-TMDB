@@ -1,75 +1,122 @@
-import 'package:flutter/cupertino.dart';
-import 'package:netflix_clone/core/colors/colors.dart';
-import '../../../core/constents.dart';
-import '../../home/widget/custom_button_widget.dart';
-import '../../widgets/netflix_logo_with_text.dart';
-import '../../widgets/video_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:netflix_clone/core/constents.dart';
+import 'package:netflix_clone/core/string.dart';
+import 'package:netflix_clone/presentation/new_and_hot/widgets/action_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
-class EveryoneWatchingWidget extends StatelessWidget {
-  const EveryoneWatchingWidget({
-    super.key, 
-    required this.snapshot, 
-    required this.index,
+class EveryWatchCard extends StatelessWidget {
+  const EveryWatchCard({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.overview,
   });
 
-  final AsyncSnapshot snapshot;
-  final int index;
+  final String image;
+  final String title;
+  final String overview;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 5, left: 5, right: 5),
+      padding: const EdgeInsets.only(left: 5, right: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const NetflixLogoWIthText(
-            videoText: "SERIES",
+          kkHeight(10),
+          Image.asset(seriesLogo),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
           ),
-           Text(
-            "${snapshot.data![index].title}",
-            style:const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          kkHeight(10),
+          Text(
+            overview,
+            style: TextStyle(
+              fontWeight: FontWeight.w100,
+              fontSize: 14,
+              color: Colors.grey.shade600,
+            ),
           ),
-          kHeight5,
-           Text(
-            "${snapshot.data[index].overview}",
-            style:const TextStyle(color: grey, fontSize: 13.8),
+          kkHeight(30),
+          _newAndHotMainImage(size, image),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Row(
+              children: [
+                const Spacer(),
+                ActionWidget(
+                  icon: fastLaughShare,
+                  iconSize: 0.05,
+                  text: 'Share',
+                  textSize: 13,
+                  height: 0.01,
+                  textColor: Colors.grey.shade500,
+                ),
+                kkWidth(20),
+                ActionWidget(
+                  icon: fastLaughAdd,
+                  iconSize: 0.05,
+                  text: 'My List',
+                  textSize: 13,
+                  height: 0.01,
+                  textColor: Colors.grey.shade500,
+                ),
+                kkWidth(25),
+                ActionWidget(
+                  icon: fastLaughPlay,
+                  iconSize: 0.05,
+                  text: 'Play',
+                  textSize: 13,
+                  height: 0.01,
+                  textColor: Colors.grey.shade500,
+                )
+              ],
+            ),
           ),
-          kHeight50,
-          VideoWidget(
-            size: size,
-            buttonRadius: 22.5,
-            avatarRadius: 22.5, 
-            snapshot: snapshot, 
-            index: index,
-          ),
-          kHeight25,
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomButtonWidget(
-                icon: CupertinoIcons.paperplane,
-                title: 'Share',
-                iconSize: 30,
-                textSize: 10,
+          kkHeight(10),
+        ],
+      ),
+    );
+  }
+
+  SizedBox _newAndHotMainImage(Size size, String image) {
+    return SizedBox(
+      width: double.infinity,
+      height: 200,
+      child: Stack(
+        children: [
+          CachedNetworkImage(
+            imageUrl: image,
+            imageBuilder: (context, imageProvider) => ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image(
+                image: imageProvider,
+                fit: BoxFit.cover,
+                width: size.width,
+                height: size.height,
               ),
-              kWidth15,
-              CustomButtonWidget(
-                icon: CupertinoIcons.add,
-                title: 'My List',
-                iconSize: 30,
-                textSize: 10,
+            ),
+            placeholder: (context, url) => Shimmer(
+              gradient: shimmerGradient,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.black,
+                ),
               ),
-              kWidth15,
-              CustomButtonWidget(
-                icon: CupertinoIcons.play_fill,
-                title: 'Play',
-                iconSize: 30,
-                textSize: 10,
-              ),
-              kWidth15,
-            ],
-          )
+            ),
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Image.asset(
+              logo,
+              width: 16,
+            ),
+          ),
         ],
       ),
     );

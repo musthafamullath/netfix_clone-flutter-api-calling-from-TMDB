@@ -38,14 +38,12 @@ class _VideoListItemState extends State<VideoListItem> {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return Stack(
       children: [
-        SizedBox.expand(
-          child: SizedBox(
-            width: playerController!.value.size.width,
-            height: playerController!.value.size.height,
-            child: VideoPlayer(playerController!),
-          ),
+        SizedBox.square(
+          child: VideoPlayer(playerController!),
         ),
         Align(
           alignment: Alignment.bottomCenter,
