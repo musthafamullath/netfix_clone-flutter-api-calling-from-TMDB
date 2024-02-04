@@ -1,6 +1,6 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:netflix_clone/application/apiconstants.dart';
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/presentation/home/widget/main_title.dart';
 import '../../../core/colors/colors.dart';

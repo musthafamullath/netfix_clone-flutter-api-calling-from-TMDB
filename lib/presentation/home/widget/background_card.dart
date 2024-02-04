@@ -2,8 +2,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_clone/api/api.dart';
-import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:netflix_clone/application/api.dart';
+import 'package:netflix_clone/application/apiconstants.dart';
 import 'package:netflix_clone/core/string.dart';
 import 'package:netflix_clone/models/movie.dart';
 import 'package:netflix_clone/presentation/home/widget/custom_button_widget.dart';

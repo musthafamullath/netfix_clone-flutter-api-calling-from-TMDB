@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:netflix_clone/api/api.dart';
+import 'package:netflix_clone/application/api.dart';
 import 'package:netflix_clone/models/movie.dart';
 import 'package:netflix_clone/presentation/new_and_hot/new_and_hot_app_bar.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/comming_soon_widget.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/everyone_watching_widget.dart';
+import 'package:netflix_clone/presentation/new_and_hot/widgets/shimmer_for_new_and_hot.dart';
 
 import '../../core/string.dart';
 
@@ -40,7 +41,7 @@ class _ScreenNewAndHotState extends State<ScreenNewAndHot> {
           body: TabBarView(
             children: [
               _tabViewOne(context, upComingMovies, size),
-              _tavViewTwo(popularSeries),
+              _tavViewTwo(popularSeries,size),
             ],
           ),
         ),
@@ -54,10 +55,11 @@ class _ScreenNewAndHotState extends State<ScreenNewAndHot> {
     Size size,
   ) {
     return FutureBuilder(
+      
       future: upComingMovies,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('Error loading');
+          return ShimmerForAll(hightSize:size.height, widthSize: size.height);
         } else if (snapshot.hasData) {
           return ListView.builder(
             shrinkWrap: true,
@@ -86,18 +88,15 @@ class _ScreenNewAndHotState extends State<ScreenNewAndHot> {
     );
   }
 
-  Widget _tavViewTwo(Future<List<Movie>> popularMovies) {
+  Widget _tavViewTwo(Future<List<Movie>> popularMovies, Size size) {
+    
     return FutureBuilder(
       future: popularMovies,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return SpinKitFadingCircle(
             itemBuilder: (BuildContext context, int index) {
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: index.isEven ? Colors.red : Colors.green,
-                ),
-              );
+            return ShimmerForAll(hightSize:size.width, widthSize: size.height);
             },
           );
         } else if (snapshot.hasData) {

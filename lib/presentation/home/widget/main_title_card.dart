@@ -3,7 +3,7 @@ import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/presentation/home/widget/details_screan.dart';
 import 'package:netflix_clone/presentation/home/widget/main_title.dart';
 
-import '../../../apiconstants/apiconstants.dart';
+import '../../../application/apiconstants.dart';
 
 class MainTitleCard extends StatelessWidget {
   const MainTitleCard({

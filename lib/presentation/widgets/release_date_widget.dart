@@ -24,14 +24,14 @@ class ReleaseDateWidget extends StatelessWidget {
           Text(
             "Release Date: ",
             style: GoogleFonts.zenAntique(
-              fontSize: 15,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             movie.releaseDate.toString(),
             style: GoogleFonts.zenAntique(
-              fontSize: 15,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
           ),

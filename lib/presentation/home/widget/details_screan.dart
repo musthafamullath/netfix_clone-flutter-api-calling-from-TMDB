@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netflix_clone/apiconstants/apiconstants.dart';
+import 'package:netflix_clone/application/apiconstants.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/models/movie.dart';
@@ -21,23 +20,27 @@ class DetailsScreen extends StatelessWidget {
         slivers: [
           SliverAppBar.large(
             leading: Padding(
-              padding: const EdgeInsets.only(left: 5,top: 5,bottom: 5),
+              padding: const EdgeInsets.only(left: 5, top: 5, bottom: 5),
               child: Container(
                 height: 50,
                 width: 50,
-                
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  
                   color: black.withOpacity(0.5),
                 ),
-                child: IconButton(onPressed: (){
-                  Navigator.pop(context);
-                }, icon:const Icon(Icons.arrow_back,color: white,size: 32,)),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: white,
+                      size: 32,
+                    )),
               ),
             ),
-            expandedHeight: size * 5.5 / 10,
-            pinned: true,
+            expandedHeight: size * 3 / 10,
+            stretch: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
@@ -53,7 +56,7 @@ class DetailsScreen extends StatelessWidget {
                     bottomRight: Radius.circular(30)),
                 child: Image.network(
                   "${ApiConstants.imagePath}${movie.backdropPath}",
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   filterQuality: FilterQuality.high,
                 ),
               ),
@@ -68,6 +71,7 @@ class DetailsScreen extends StatelessWidget {
                     "Overview",
                     style: GoogleFonts.zenAntique(
                         fontSize: 35, fontWeight: FontWeight.w800),
+                    textAlign: TextAlign.start,
                   ),
                   kHeight15,
                   Text(
@@ -95,5 +99,3 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 }
-
-

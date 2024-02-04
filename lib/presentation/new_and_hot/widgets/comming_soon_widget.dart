@@ -1,15 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_clone/core/string.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/action_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/constents.dart';
 import 'package:intl/intl.dart';
-
-
-
-
-
 
 class ComingSoonCard extends StatelessWidget {
   const ComingSoonCard({
@@ -57,6 +53,11 @@ class ComingSoonCard extends StatelessWidget {
         children: [
           Row(
             children: [
+              Text(
+                title,
+                style: GoogleFonts.shadowsIntoLight(
+                    fontWeight: FontWeight.bold,letterSpacing: 3,  height: 1),
+              ),
               const Spacer(),
               ActionWidget(
                 icon: notification,
@@ -81,16 +82,11 @@ class ComingSoonCard extends StatelessWidget {
             'Releasing on ${DateFormat('EEEE').format(date)} ',
             style: const TextStyle(
               fontWeight: FontWeight.w100,
-              fontSize: 16,
+              fontSize: 10,
             ),
           ),
           kkHeight(10),
           Image.asset(filmLogo),
-          Text(
-            title,
-            style: const TextStyle(
-                fontWeight: FontWeight.w600, fontSize: 18, height: 1),
-          ),
           kkHeight(10),
           Text(
             overview,

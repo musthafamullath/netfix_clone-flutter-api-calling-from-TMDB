@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/core/string.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/action_widget.dart';
@@ -29,7 +30,7 @@ class EveryWatchCard extends StatelessWidget {
           Image.asset(seriesLogo),
           Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+            style: GoogleFonts.shadowsIntoLightTwo(fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 18),
           ),
           kkHeight(10),
           Text(

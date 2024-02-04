@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:netflix_clone/api/api.dart';
+import 'package:netflix_clone/application/api.dart';
 
 import 'package:netflix_clone/core/constents.dart';
 import 'package:netflix_clone/models/movie.dart';

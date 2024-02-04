@@ -26,15 +26,15 @@ class RatingWidget extends StatelessWidget {
           Text(
             "Rating: ",
             style: GoogleFonts.zenAntique(
-              fontSize: 15,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
           ),
           const Icon(
-            CupertinoIcons.star_fill,color: Colors.amber,size: 15,
+            CupertinoIcons.star_fill,color: Colors.amber,size: 10,
           ),
           Text(" ${movie.voteAverage.toStringAsFixed(1)}/10",style: GoogleFonts.zenAntique(
-              fontSize: 15,
+              fontSize: 10,
               fontWeight: FontWeight.bold,
             ),)
         ],

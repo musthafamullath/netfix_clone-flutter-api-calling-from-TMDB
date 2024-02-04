@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:netflix_clone/api/api.dart';
+import 'package:netflix_clone/application/api.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/models/movie.dart';
 import 'package:netflix_clone/presentation/downloads/widget/download_image_widget.dart';

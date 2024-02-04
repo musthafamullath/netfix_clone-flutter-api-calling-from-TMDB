@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/application/api.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/models/movie.dart';
 import 'package:netflix_clone/presentation/fast_laughs/widgets/debouncer.dart';
 import 'package:netflix_clone/presentation/search/search.dart';
 import 'package:netflix_clone/presentation/search/widget/search_idle.dart';
 import 'package:netflix_clone/presentation/search/widget/search_result.dart';
-import '../../models/series.dart';
+
 
 ValueNotifier<List<Movie>> searching = ValueNotifier([]);
 
@@ -21,8 +22,9 @@ class Screensearch extends StatefulWidget {
 
 class _ScreensearchState extends State<Screensearch> {
   final TextEditingController searchController = TextEditingController();
-  late Future<List<Movie>> popularSearches;
-  late Future<List<Series>> seriesList;
+  late Future<List<Movie>> popular;
+  late Future<List<Movie>> upcoming;
+
 
   final Debouncer debouncer =
       Debouncer(delay: const Duration(milliseconds: 500));
@@ -31,8 +33,9 @@ class _ScreensearchState extends State<Screensearch> {
 
   @override
   void initState() {
-    popularSearches = getAllMoviesList('');
-    seriesList = getAllSeriesList('');
+    popular = Api().getNowPlayingMovies();
+    upcoming = Api().getUpComingMovies();
+
     super.initState();
   }
 
@@ -42,55 +45,55 @@ class _ScreensearchState extends State<Screensearch> {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CupertinoSearchTextField(
-                controller: searchController,
-                backgroundColor: Colors.grey.withOpacity(0.4),
-                prefixInsets: EdgeInsetsDirectional.zero,
-                suffixInsets: const EdgeInsetsDirectional.only(end: 10),
-                prefixIcon: const Padding(
-                  padding: EdgeInsets.only(left: 5.0),
-                  child: Icon(
-                    CupertinoIcons.search,
-                    color: grey,
-                  ),
-                ),
-                suffixIcon: const Icon(
-                  CupertinoIcons.xmark_circle_fill,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CupertinoSearchTextField(
+              controller: searchController,
+              backgroundColor: Colors.grey.withOpacity(0.4),
+              prefixInsets: EdgeInsetsDirectional.zero,
+              suffixInsets: const EdgeInsetsDirectional.only(end: 10),
+              prefixIcon: const Padding(
+                padding: EdgeInsets.only(left: 5.0),
+                child: Icon(
+                  CupertinoIcons.search,
                   color: grey,
                 ),
-                style: const TextStyle(color: Colors.white),
-                onTap: () {
-                  setState(() {
-                    isTapped = true;
-                  });
-                },
-                onChanged: (value) {
-                  debouncer.run(() {
-                    setState(() {
-                      popularSearches = getAllMoviesList(value);
-                      seriesList = getAllSeriesList(value);
-                    });
-                  });
-                },
               ),
-              isTapped == true
-                  ? Expanded(
-                      child: SearchResultWidget(
-                      movieList: popularSearches,
-                      seriesList: seriesList,
-                    ))
-                  : Expanded(
-                      child: SearchIdleWidget(
-                      popularSearches: popularSearches,
-                    ))
-            ],
-          ),
+              suffixIcon: const Icon(
+                CupertinoIcons.xmark_circle_fill,
+                color: grey,
+              ),
+              style: const TextStyle(color: Colors.white),
+              onTap: () {
+                setState(() {
+                  isTapped = true;
+                });
+              },
+              onChanged: (value) {
+                debouncer.run(() {
+                  setState(() {
+                    popular = getAllMoviesList(value);
+                    upcoming = getAllMoviesList(value);
+                    
+                  });
+                });
+              },
+            ),
+            isTapped == true
+                ? Expanded(
+                    child: SearchIdleWidget(
+                    popularSearches: popular,
+                  ))
+                : Expanded(
+                    child: SearchResultWidget(
+                    movieList1: popular, movieList2: upcoming,
+                    
+                  ))
+          ],
         ),
       )),
     );
   }
 }
+
