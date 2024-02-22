@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/application/api.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
-import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/domin/models/movie.dart';
 import 'package:netflix_clone/presentation/fast_laughs/widgets/debouncer.dart';
 import 'package:netflix_clone/presentation/search/search.dart';
 import 'package:netflix_clone/presentation/search/widget/search_idle.dart';

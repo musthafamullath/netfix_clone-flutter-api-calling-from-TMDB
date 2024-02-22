@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:netflix_clone/application/apiconstants.dart';
-import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/domin/models/movie.dart';
 
 
 String moviesList = ApiEndPoints.pastYearMovies;

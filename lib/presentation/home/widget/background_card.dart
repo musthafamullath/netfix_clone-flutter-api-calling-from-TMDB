@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:netflix_clone/application/api.dart';
 import 'package:netflix_clone/application/apiconstants.dart';
 import 'package:netflix_clone/core/string.dart';
-import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/domin/models/movie.dart';
 import 'package:netflix_clone/presentation/home/widget/custom_button_widget.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/shimmer_for_new_and_hot.dart';
 import '../../../core/colors/colors.dart';

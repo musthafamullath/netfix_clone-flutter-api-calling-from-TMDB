@@ -5,7 +5,7 @@ import 'package:netflix_clone/presentation/search/widget/search_main_card.dart';
 import 'package:netflix_clone/presentation/search/widget/stack_shimmer.dart';
 import 'package:netflix_clone/presentation/search/widget/title.dart';
 import '../../../core/string.dart';
-import '../../../models/movie.dart';
+import '../../../domin/models/movie.dart';
 
 class SearchResultWidget extends StatelessWidget {
   const SearchResultWidget({

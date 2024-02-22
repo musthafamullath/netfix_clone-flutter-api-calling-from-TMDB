@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netflix_clone/core/constents.dart';
-import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/domin/models/movie.dart';
 import 'package:netflix_clone/presentation/search/widget/popular_search.dart';
 import 'package:netflix_clone/presentation/search/widget/title.dart';
 import '../../../core/string.dart';

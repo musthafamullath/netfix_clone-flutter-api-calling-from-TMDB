@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netflix_clone/application/api.dart';
-import 'package:netflix_clone/models/movie.dart';
+import 'package:netflix_clone/domin/models/movie.dart';
 import 'package:netflix_clone/presentation/new_and_hot/new_and_hot_app_bar.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/comming_soon_widget.dart';
 import 'package:netflix_clone/presentation/new_and_hot/widgets/everyone_watching_widget.dart';
